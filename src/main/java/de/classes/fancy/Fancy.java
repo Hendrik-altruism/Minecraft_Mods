@@ -18,20 +18,41 @@ public final class Fancy extends JavaPlugin {
     private File factionConfigFile;
     private FileConfiguration factionConfig;
 
-    @Override
-    public void onEnable() {
+    private void createFactionConfigFile() {
         this.factionConfigFile = new File(getDataFolder(), CONFIG_NAME);
         if (!this.factionConfigFile.exists()) {
             this.factionConfigFile.getParentFile().mkdirs();
-            saveResource(CONFIG_NAME, false);
-            this.factionConfigFile = new File(getDataFolder(), CONFIG_NAME);
+            try {
+                this.factionConfigFile.createNewFile();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
+
+        // load ConfigFile
         this.factionConfig = new YamlConfiguration();
         try {
-            factionConfig.load(factionConfigFile);
+           factionConfig.load(factionConfigFile);
         } catch (IOException | InvalidConfigurationException e) {
+           e.printStackTrace();
+        }
+    }
+
+    public FileConfiguration getFactionConfig() {
+        return this.factionConfig;
+    }
+    public void saveFactionConfig() {
+        System.out.println(getDataFolder());
+        try {
+            this.factionConfig.save(getDataFolder() + "/" + CONFIG_NAME);
+        } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public void onEnable() {
+        createFactionConfigFile();
 
         // Plugin startup logic
         getCommand("test").setExecutor(new TestCommand(this));

@@ -2,9 +2,12 @@ name: Fancy
 version: '${project.version}'
 main: de.classes.fancy.Fancy
 api-version: 1.19
+authors:
+  - "Frederick Behringer"
+  - "Hendrik Oude-Hengel"
 commands:
   test:
 
   faction:
-
-
+    description: This command is used to manage your faction!
+    usage: "Usage: /faction [join|get]"
