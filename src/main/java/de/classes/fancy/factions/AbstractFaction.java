@@ -7,7 +7,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
-import org.bukkit.event.player.PlayerEvent;
 import org.bukkit.event.player.PlayerItemConsumeEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
@@ -16,11 +15,11 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 public abstract class AbstractFaction implements Listener {
 
-    private final String FACTION_NAME;
-    private final FactionManager factionManager;
-    private final Fancy plugin;
+    protected final String FACTION_NAME;
+    protected final FactionManager factionManager;
+    protected final Fancy plugin;
 
-    public AbstractFaction (String factionName, Fancy plugin) {
+    protected AbstractFaction (String factionName, Fancy plugin) {
         this.FACTION_NAME = factionName;
         this.factionManager = plugin.getFactionManager();
         this.plugin = plugin;

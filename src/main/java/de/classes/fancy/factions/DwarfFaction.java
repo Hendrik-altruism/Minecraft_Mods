@@ -1,6 +1,5 @@
 package de.classes.fancy.factions;
 
-import de.classes.fancy.FactionManager;
 import de.classes.fancy.Fancy;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -11,6 +10,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockDropItemEvent;
+import org.bukkit.event.inventory.PrepareItemCraftEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.ShapedRecipe;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -84,6 +84,17 @@ public class DwarfFaction extends AbstractFaction {
                 stack.setAmount(stack.getAmount() + 2);
                 item.setItemStack(stack);
             });
+        }
+    }
+
+    @EventHandler (priority = EventPriority.HIGHEST)
+    public void onPrepareItemCraftEvent(PrepareItemCraftEvent event) {
+        Player player = Bukkit.getPlayer(event.getViewers().get(0).getName());
+        if (!isEventForFaction(player) && event.getRecipe() instanceof ShapedRecipe) {
+           ShapedRecipe recipe = (ShapedRecipe) event.getRecipe();
+            if (recipe.getKey().equals(new NamespacedKey(this.plugin, "dwarf_iron_pickaxe"))) {
+               event.getInventory().setResult(null);
+           }
         }
     }
 }
