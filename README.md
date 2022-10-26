@@ -24,4 +24,4 @@ Ork
  - Feuerresistenz (im Nether?)
  - Speed (im Nether)
 
-Orks im Nether stark <-> Eleben in der Oberwelt
+Orks im Nether stark <-> Elben in der Oberwelt 
