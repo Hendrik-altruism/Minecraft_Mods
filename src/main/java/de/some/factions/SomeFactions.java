@@ -14,6 +14,7 @@ public final class SomeFactions extends JavaPlugin {
     public void onEnable() {
         this.factionManager = new FactionManager(this);
         getServer().getPluginManager().registerEvents(new DwarfFaction(this), this);
+        // ToDO Add other Factions
 
         getCommand("test").setExecutor(new TestCommand(this));
         getCommand("faction").setExecutor(new FactionCommand(this));

@@ -1,11 +1,18 @@
 package de.some.factions.commands;
 
 import org.bukkit.Bukkit;
+import org.bukkit.Material;
+import org.bukkit.block.Block;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
+import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.plugin.Plugin;
+
+import static org.bukkit.Material.DIAMOND_ORE;
 
 public class TestCommand implements  CommandExecutor {
 
@@ -36,6 +43,13 @@ public class TestCommand implements  CommandExecutor {
         sender.sendMessage("Speed changed to: "+args[0]);
         // System.out.println(args.length);
         // sc get <PlayerName>
+
+
         return false;
+    }
+
+    @EventHandler(priority = EventPriority.HIGHEST)
+    public void on(BlockBreakEvent event) {
+        if(event.getBlock().getBlockData().getMaterial()== DIAMOND_ORE){}
     }
 }

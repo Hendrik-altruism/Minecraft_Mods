@@ -17,7 +17,8 @@ public class FactionManager {
     public static final String ORC = "orc";
     public static final String ELB = "elb";
     public static final String DWARF = "dwarf";
-    public static final String[] FACTIONS = {ORC, HUMAN, ELB, DWARF};
+    public static final String OCEAN = "ocean";
+    public static final String[] FACTIONS = {ORC, HUMAN, ELB, DWARF, OCEAN};
 
     private static final String CONFIG_NAME = "factions.yml";
     private FileConfiguration factionConfig;
