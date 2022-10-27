@@ -1,5 +1,6 @@
 package de.some.factions.factions;
 
+import de.some.factions.FactionManager;
 import de.some.factions.SomeFactions;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -25,11 +26,9 @@ import static org.bukkit.Material.*;
 
 
 public class OceanFaction extends AbstractFaction{
-    public static final String FACTION_NAME = "ocean";
-    public static final String FACTION_COLOR = "§9";
 
     protected OceanFaction(SomeFactions plugin) {
-        super(plugin);
+        super(plugin, FactionManager.OCEAN, "$9");
     }
 
     @Override

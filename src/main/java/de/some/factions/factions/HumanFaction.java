@@ -1,5 +1,6 @@
 package de.some.factions.factions;
 
+import de.some.factions.FactionManager;
 import de.some.factions.SomeFactions;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -26,11 +27,9 @@ import static org.bukkit.Material.*;
 
 public class HumanFaction extends AbstractFaction{
 
-    public static final String FACTION_NAME = "human";
-    public static final String FACTION_COLOR = "§6";
 
     protected HumanFaction(SomeFactions plugin) {
-        super(plugin);
+        super(plugin, FactionManager.HUMAN, "§6");
     }
 
     @Override

@@ -65,6 +65,29 @@ public class FactionCommand implements CommandExecutor, TabCompleter {
                         sender.sendMessage("You need to specify a Players name.");
                     }
                     break;
+                case "set": // faction set <PlayerName> <Faction>
+                    if (args.length >= 2 &&
+                            !Bukkit.getOperators().stream().anyMatch(el -> el.getName().equals(sender.getName()))) {
+                        sender.sendMessage("You have no permission to execute this Command.");
+                        return true;
+                    }
+                    if (args.length >= 3 && Arrays.stream(FACTIONS).anyMatch(e -> e.equals(args[2]))) {
+                        Player player = Bukkit.getPlayer(args[2]);
+                        if (player == null) {
+                            sender.sendMessage(args[1] + " is not a known Player.");
+                            return false;
+                        }
+                        boolean res = plugin.getFactionManager().setFactionOfPlayer(player, args[1]);
+                        if (res) {
+                            sender.sendMessage(args [1] + " is now a(n) " + args[1] + "!");
+                        } else {
+                            sender.sendMessage("Something went wrong...");
+                        }
+                    } else {
+                        sender.sendMessage("You need to choose a PlayerName and a Faction. You can choose from: " +
+                                Arrays.stream(FACTIONS).reduce((e1, e2) -> e1 + ", " + e2).get());
+                    }
+                    break;
                 default:
                     sender.sendMessage("Invalid Command!");
             }
@@ -76,21 +99,31 @@ public class FactionCommand implements CommandExecutor, TabCompleter {
     public List<String> onTabComplete(CommandSender sender, Command command, String label,
                                       String[] args) {
         ArrayList<String> list = new ArrayList<>();
-        if (args.length == 1) {
-            list.add("join");
-            list.add("get");
-        } else if (args.length == 2) {
-            switch (args[0]) {
-                case "get":
-                    return Bukkit.getOnlinePlayers().stream()
-                            .map(Player::getName)
-                            .collect(Collectors.toList());
-                case "join":
-                    return Arrays.stream(FACTIONS)
-                            .collect(Collectors.toList());
-                default:
-                    return list;
-            }
+        switch (args.length) {
+            case 1:
+                list.add("join");
+                list.add("get");
+                System.out.println(Bukkit.getOperators());
+                if (Bukkit.getOperators().stream().anyMatch(el -> el.getName().equals(sender.getName()))) {
+                    list.add("set");
+                }
+                break;
+            case 2:
+                switch (args[0]) {
+                    case "set":
+                    case "get":
+                        return Bukkit.getOnlinePlayers().stream()
+                                .map(Player::getName)
+                                .collect(Collectors.toList());
+                    case "join":
+                        return Arrays.stream(FACTIONS)
+                                .collect(Collectors.toList());
+                    default:
+                        return list;
+                }
+            case 3:
+                return Arrays.stream(FACTIONS)
+                        .collect(Collectors.toList());
         }
         return list;
     }

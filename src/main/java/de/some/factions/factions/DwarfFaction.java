@@ -1,18 +1,24 @@
 package de.some.factions.factions;
 
+import de.some.factions.FactionManager;
 import de.some.factions.SomeFactions;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.enchantments.Enchantment;
+import org.bukkit.entity.AbstractHorse;
+import org.bukkit.entity.Horse;
+import org.bukkit.entity.Minecart;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockDropItemEvent;
-import org.bukkit.event.inventory.PrepareItemCraftEvent;
+import org.bukkit.event.player.PlayerInteractAtEntityEvent;
+import org.bukkit.event.player.PlayerInteractEntityEvent;
+import org.bukkit.event.vehicle.VehicleCreateEvent;
+import org.bukkit.event.vehicle.VehicleEnterEvent;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.Recipe;
 import org.bukkit.inventory.ShapedRecipe;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.potion.PotionEffect;
@@ -23,11 +29,8 @@ import java.util.Arrays;
 
 import static org.bukkit.Material.*;
 
+public class DwarfFaction extends AbstractFactionWithUniqueCraftingRecipes {
 
-public class DwarfFaction extends AbstractFaction {
-
-    public static final String FACTION_NAME = "dwarf";
-    public static final String FACTION_COLOR = "§8";
     private static final Material[] ORES = {
             DIAMOND_ORE,
             IRON_ORE,
@@ -43,8 +46,12 @@ public class DwarfFaction extends AbstractFaction {
     };
 
     public DwarfFaction(SomeFactions plugin) {
-        super(plugin);
-        Bukkit.addRecipe(createIronPickaxeRecipe());
+        super(plugin, FactionManager.DWARF, "§8");
+        ShapedRecipe[] dwarfRecipes = {createIronPickaxeRecipe(), createWoodenPickaxeRecipe()};
+        Arrays.stream(dwarfRecipes).forEach(recipe -> {
+            this.uniqueRecipes.add(recipe.getKey());
+            Bukkit.addRecipe(recipe);
+        });
     }
 
     @Override
@@ -63,40 +70,56 @@ public class DwarfFaction extends AbstractFaction {
 
     @EventHandler (priority = EventPriority.HIGHEST)
     public void onBlockBreakEvent(BlockBreakEvent event) {
-        if(event.getBlock().getBlockData().getMaterial()== DIAMOND_ORE){}
+        if(event.getBlock().getBlockData().getMaterial() == DIAMOND_ORE){}
     }
 
     @EventHandler (priority = EventPriority.HIGHEST)
     public void onBlockDropItemEvent(BlockDropItemEvent event) {
         if(isEventForFaction(event.getPlayer()) &&
                 Arrays.stream(ORES).anyMatch(ore -> event.getBlockState().getBlockData().getMaterial().equals(ore))){
-            event.getItems().stream().forEach(item -> {
-                ItemStack stack = item.getItemStack();
-                stack.setAmount(stack.getAmount() + 2);
-                item.setItemStack(stack);
-            });
+            event.getItems().stream()
+                    .filter(item -> !item.getItemStack().getType().isBlock())
+                    .forEach(item -> {
+                        ItemStack stack = item.getItemStack();
+                        stack.setAmount(stack.getAmount() + 2);
+                        item.setItemStack(stack);
+                    });
         }
     }
 
     @EventHandler (priority = EventPriority.HIGHEST)
-    public void onPrepareItemCraftEvent(PrepareItemCraftEvent event) {
-        Player player = Bukkit.getPlayer(event.getViewers().get(0).getName());
-        if (!isEventForFaction(player) && event.getRecipe() instanceof ShapedRecipe) {
-           ShapedRecipe recipe = (ShapedRecipe) event.getRecipe();
-            if (recipe.getKey().equals(new NamespacedKey(this.plugin, "dwarf_iron_pickaxe"))) {
-               event.getInventory().setResult(null);
-           }
+    public void onVehicleCreateEvent(VehicleCreateEvent event) {
+        if (event.getVehicle() instanceof Minecart) {
+            Minecart minecart = (Minecart) event.getVehicle();
+            System.out.println("Speed changed from: "+minecart.getMaxSpeed());
+            minecart.setMaxSpeed(.8);
         }
     }
+    private ShapedRecipe createWoodenPickaxeRecipe() {
+        ItemStack item = new ItemStack(WOODEN_PICKAXE);
+        ItemMeta itemMeta = item.getItemMeta();
+        itemMeta.setDisplayName(FACTION_COLOR + "Dwarfen Wooden Pickaxe");
+        ArrayList<String> lore = new ArrayList<>();
+        lore.add("§7Heavier, stronger and just better.");
+        lore.add("§7This is good enough for now.");
+        itemMeta.setLore(lore);
+        item.setItemMeta(itemMeta);
+        item.addEnchantment(Enchantment.DIG_SPEED, 2);
+        NamespacedKey namespacedKey = new NamespacedKey(plugin, "dwarf_wood_pickaxe");
+        ShapedRecipe recipe = new ShapedRecipe(namespacedKey, item);
+        recipe.shape("WWW", " S ", " S ");
+        recipe.setIngredient('W', OAK_LOG);
+        recipe.setIngredient('S', STICK);
+        return recipe;
+    }
 
-
-    private Recipe createIronPickaxeRecipe() {
+    private ShapedRecipe createIronPickaxeRecipe() {
         ItemStack item = new ItemStack(IRON_PICKAXE);
         ItemMeta itemMeta = item.getItemMeta();
         itemMeta.setDisplayName(FACTION_COLOR + "Dwarfen Iron Pickaxe");
         ArrayList<String> lore = new ArrayList<>();
-        lore.add("Heavier, stronger and just better.");
-        lore.add("A real Iron Pickaxe!");
+        lore.add("§7Heavier, stronger and just better.");
+        lore.add("§7A real Iron Pickaxe!");
         itemMeta.setLore(lore);
         item.setItemMeta(itemMeta);
         item.addEnchantment(Enchantment.DURABILITY, 2);

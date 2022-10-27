@@ -15,14 +15,16 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 public abstract class AbstractFaction implements Listener {
 
-    public static final String FACTION_NAME = "ABSTRACT_FACTION";
-    public static final String FACTION_COLOR = "§0";
+    public final String FACTION_NAME;
+    public final String FACTION_COLOR;
     protected final FactionManager factionManager;
     protected final SomeFactions plugin;
 
-    protected AbstractFaction (SomeFactions plugin) {
+    protected AbstractFaction (SomeFactions plugin, String FACTION_NAME, String FACTION_COLOR) {
         this.factionManager = plugin.getFactionManager();
         this.plugin = plugin;
+        this.FACTION_NAME = FACTION_NAME;
+        this.FACTION_COLOR = FACTION_COLOR;
     }
 
     @EventHandler
@@ -43,8 +45,13 @@ public abstract class AbstractFaction implements Listener {
     // since Milk can remove effects we need to refresh them
     @EventHandler (priority = EventPriority.HIGHEST) // needs to be called after effects got removed
     public void onPlayerItemConsumeEvent(PlayerItemConsumeEvent event) {
-        if (event.getItem().isSimilar(new ItemStack(Material.MILK_BUCKET))) {
-            this.filterEvents(event.getPlayer());
+        if (isEventForFaction(event.getPlayer()) && event.getItem().isSimilar(new ItemStack(Material.MILK_BUCKET))) {
+            new BukkitRunnable() {
+                @Override
+                public void run() {
+                    filterEvents(event.getPlayer());
+                }
+            }.runTaskLater(plugin, 1);
         }
     }
 
