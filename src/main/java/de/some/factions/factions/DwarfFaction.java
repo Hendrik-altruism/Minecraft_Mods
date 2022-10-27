@@ -1,6 +1,6 @@
-package de.classes.fancy.factions;
+package de.some.factions.factions;
 
-import de.classes.fancy.Fancy;
+import de.some.factions.SomeFactions;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
@@ -12,19 +12,22 @@ import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockDropItemEvent;
 import org.bukkit.event.inventory.PrepareItemCraftEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.Recipe;
 import org.bukkit.inventory.ShapedRecipe;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 
-import static de.classes.fancy.FactionManager.DWARF;
 import static org.bukkit.Material.*;
 
 
 public class DwarfFaction extends AbstractFaction {
 
+    public static final String FACTION_NAME = "dwarf";
+    public static final String FACTION_COLOR = "§8";
     private static final Material[] ORES = {
             DIAMOND_ORE,
             IRON_ORE,
@@ -39,21 +42,9 @@ public class DwarfFaction extends AbstractFaction {
             NETHER_GOLD_ORE
     };
 
-    public DwarfFaction(Fancy plugin) {
-        super(DWARF, plugin);
-
-        ItemStack item = new ItemStack(IRON_PICKAXE);
-        ItemMeta itemMeta = item.getItemMeta();
-        itemMeta.setDisplayName("§aDwarfen Iron Pickaxe");
-        item.setItemMeta(itemMeta);
-        item.addEnchantment(Enchantment.DURABILITY, 2);
-        NamespacedKey namespacedKey = new NamespacedKey(plugin, "dwarf_iron_pickaxe");
-        ShapedRecipe recipe = new ShapedRecipe(namespacedKey, item);
-        recipe.shape("III", " S ", " S ");
-        recipe.setIngredient('I', IRON_BLOCK);
-        recipe.setIngredient('S', STICK);
-
-        Bukkit.addRecipe(recipe);
+    public DwarfFaction(SomeFactions plugin) {
+        super(plugin);
+        Bukkit.addRecipe(createIronPickaxeRecipe());
     }
 
     @Override
@@ -96,5 +87,25 @@ public class DwarfFaction extends AbstractFaction {
                event.getInventory().setResult(null);
            }
         }
+    }
+
+
+    private Recipe createIronPickaxeRecipe() {
+        ItemStack item = new ItemStack(IRON_PICKAXE);
+        ItemMeta itemMeta = item.getItemMeta();
+        itemMeta.setDisplayName(FACTION_COLOR + "Dwarfen Iron Pickaxe");
+        ArrayList<String> lore = new ArrayList<>();
+        lore.add("Heavier, stronger and just better.");
+        lore.add("A real Iron Pickaxe!");
+        itemMeta.setLore(lore);
+        item.setItemMeta(itemMeta);
+        item.addEnchantment(Enchantment.DURABILITY, 2);
+        item.addEnchantment(Enchantment.DIG_SPEED, 3);
+        NamespacedKey namespacedKey = new NamespacedKey(plugin, "dwarf_iron_pickaxe");
+        ShapedRecipe recipe = new ShapedRecipe(namespacedKey, item);
+        recipe.shape("III", " S ", " S ");
+        recipe.setIngredient('I', IRON_BLOCK);
+        recipe.setIngredient('S', STICK);
+        return recipe;
     }
 }

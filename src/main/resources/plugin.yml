@@ -1,6 +1,6 @@
-name: Fancy
+name: some-factions
 version: '${project.version}'
-main: de.classes.fancy.Fancy
+main: de.some.factions.SomeFactions
 api-version: 1.19
 authors:
   - "Frederick Behringer"

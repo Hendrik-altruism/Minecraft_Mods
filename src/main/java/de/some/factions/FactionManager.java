@@ -1,4 +1,4 @@
-package de.classes.fancy;
+package de.some.factions;
 
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -7,6 +7,9 @@ import org.bukkit.entity.Player;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public class FactionManager {
 
@@ -16,23 +19,22 @@ public class FactionManager {
     public static final String DWARF = "dwarf";
     public static final String[] FACTIONS = {ORC, HUMAN, ELB, DWARF};
 
-    private static final String CONFIG_NAME = "sc_factions.yml";
-    private File factionConfigFile;
+    private static final String CONFIG_NAME = "factions.yml";
     private FileConfiguration factionConfig;
 
-    private Fancy plugin;
+    private final SomeFactions plugin;
 
-    public FactionManager(Fancy plugin) {
+    public FactionManager(SomeFactions plugin) {
         this.plugin = plugin;
         createFactionConfigFile();
     }
 
     private void createFactionConfigFile() {
-        this.factionConfigFile = new File(plugin.getDataFolder(), CONFIG_NAME);
-        if (!this.factionConfigFile.exists()) {
-            this.factionConfigFile.getParentFile().mkdirs();
+        File factionConfigFile = new File(plugin.getDataFolder(), CONFIG_NAME);
+        if (!factionConfigFile.exists()) {
+            factionConfigFile.getParentFile().mkdirs();
             try {
-                this.factionConfigFile.createNewFile();
+                factionConfigFile.createNewFile();
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -51,23 +53,37 @@ public class FactionManager {
         return this.factionConfig;
     }
 
-    public void saveFactionConfig() {
-        System.out.println(plugin.getDataFolder());
+    public boolean saveFactionConfig() {
         try {
             this.factionConfig.save(plugin.getDataFolder() + "/" + CONFIG_NAME);
         } catch (IOException e) {
             e.printStackTrace();
+            return false;
         }
+        return true;
     }
 
     public String getFactionOfPlayer(Player player) {
-        for (String faction : FACTIONS) {
-            if (this.factionConfig.contains(faction) &&
-                    this.factionConfig.getStringList(faction).stream().anyMatch(el -> el.equals(player.getName()))) {
-                return faction;
-            }
+        String name = player.getName();
+        if (this.factionConfig.contains(name)) {
+            String faction = this.factionConfig.getString(name);
+            return Arrays.asList(FACTIONS).contains(faction) ? faction : null;
         }
         return null;
+    }
+
+    public boolean setFactionOfPlayer(Player player, String faction) {
+        if (!Arrays.asList(FACTIONS).contains(faction)) {
+            // TODO throw Exception
+            return false;
+        }
+        String name = player.getName();
+        factionConfig.set(name, faction);
+        return saveFactionConfig();
+    }
+
+    public boolean playerHasFaction(Player player) {
+        return getFactionOfPlayer(player) != null;
     }
 
 }

@@ -1,7 +1,7 @@
-package de.classes.fancy.factions;
+package de.some.factions.factions;
 
-import de.classes.fancy.FactionManager;
-import de.classes.fancy.Fancy;
+import de.some.factions.FactionManager;
+import de.some.factions.SomeFactions;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -15,12 +15,12 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 public abstract class AbstractFaction implements Listener {
 
-    protected final String FACTION_NAME;
+    public static final String FACTION_NAME = "ABSTRACT_FACTION";
+    public static final String FACTION_COLOR = "§0";
     protected final FactionManager factionManager;
-    protected final Fancy plugin;
+    protected final SomeFactions plugin;
 
-    protected AbstractFaction (String factionName, Fancy plugin) {
-        this.FACTION_NAME = factionName;
+    protected AbstractFaction (SomeFactions plugin) {
         this.factionManager = plugin.getFactionManager();
         this.plugin = plugin;
     }
@@ -49,7 +49,8 @@ public abstract class AbstractFaction implements Listener {
     }
 
     protected boolean isEventForFaction(Player player) {
-        return this.factionManager.getFactionOfPlayer(player).equals(FACTION_NAME);
+        String faction = this.factionManager.getFactionOfPlayer(player);
+        return faction != null && faction.equals(FACTION_NAME);
     }
     protected void filterEvents(Player player) {
         if (this.isEventForFaction(player)) {

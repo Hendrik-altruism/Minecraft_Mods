@@ -1,6 +1,6 @@
-package de.classes.fancy.commands;
+package de.some.factions.commands;
 
-import de.classes.fancy.Fancy;
+import de.some.factions.SomeFactions;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -14,14 +14,14 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static de.classes.fancy.FactionManager.FACTIONS;
+import static de.some.factions.FactionManager.FACTIONS;
 
 
 public class FactionCommand implements CommandExecutor, TabCompleter {
 
-    private final Fancy plugin;
+    private final SomeFactions plugin;
 
-    public FactionCommand(Fancy plugin) {
+    public FactionCommand(SomeFactions plugin) {
         this.plugin = plugin;
     }
 
@@ -36,31 +36,33 @@ public class FactionCommand implements CommandExecutor, TabCompleter {
                 case "join": // sc join <class>
                     if (args.length >= 2 && Arrays.stream(FACTIONS).anyMatch(e -> e.equals(args[1]))) {
                         Player player = Bukkit.getPlayer(sender.getName());
-                        if (plugin.getFactionManager().getFactionOfPlayer(player) != null) {
+                        if (plugin.getFactionManager().playerHasFaction(player)) {
                             sender.sendMessage("You already have a Faction!");
                             return true;
                         }
-                        FileConfiguration fc = plugin.getFactionManager().getFactionConfig();
-                        if (!fc.contains(args[1])) {
-                            fc.set(args[1], new ArrayList<String>());
+                        boolean res = plugin.getFactionManager().setFactionOfPlayer(player, args[1]);
+                        if (res) {
+                            sender.sendMessage("You are now a(n) " + args[1] + "!");
+                        } else {
+                            sender.sendMessage("Something went wrong..." +
+                                    " Please contact an Admin if this Error persists.");
                         }
-                        List<String> factionMembers = fc.getStringList(args[1]);
-                        factionMembers.add(player.getName());
-                        fc.set(args[1], factionMembers);
-                        plugin.getFactionManager().saveFactionConfig();
-                        sender.sendMessage("You are now a(n) " + args[1] + "!");
                     } else {
                         sender.sendMessage("You need to choose a Faction. You can choose from: " +
                                 Arrays.stream(FACTIONS).reduce((e1, e2) -> e1 + ", " + e2).get());
                     }
                     break;
                 case "get": // sc get <PlayerName>
-                    Player player = Bukkit.getPlayer(args[1]);
-                    String faction = plugin.getFactionManager().getFactionOfPlayer(player);
-                    if (faction != null) {
-                        sender.sendMessage(player.getName()+ " is an " + faction);
+                    if (args.length >= 2) {
+                        Player player = Bukkit.getPlayer(args[1]);
+                        String faction = plugin.getFactionManager().getFactionOfPlayer(player);
+                        if (faction != null) {
+                            sender.sendMessage(player.getName()+ " is an " + faction);
+                        } else {
+                            sender.sendMessage(player.getName() + " has no Faction... :(");
+                        }
                     } else {
-                        sender.sendMessage(player.getName() + " has no Faction... :(");
+                        sender.sendMessage("You need to specify a Players name.");
                     }
                     break;
                 default:

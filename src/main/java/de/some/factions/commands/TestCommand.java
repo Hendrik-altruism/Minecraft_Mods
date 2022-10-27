@@ -1,4 +1,4 @@
-package de.classes.fancy.commands;
+package de.some.factions.commands;
 
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
