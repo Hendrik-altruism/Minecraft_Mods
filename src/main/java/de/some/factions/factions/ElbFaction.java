@@ -27,7 +27,7 @@ import static org.bukkit.Material.*;
 public class ElbFaction extends AbstractFaction{
 
     public static final String FACTION_NAME = "elb";
-    public static final String FACTION_COLOR = "§6";
+    public static final String FACTION_COLOR = "§2";
 
     protected ElbFaction(SomeFactions plugin) {
         super(plugin);

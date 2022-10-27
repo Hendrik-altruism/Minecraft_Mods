@@ -27,7 +27,7 @@ import static org.bukkit.Material.*;
 public class HumanFaction extends AbstractFaction{
 
     public static final String FACTION_NAME = "human";
-    public static final String FACTION_COLOR = "§5";
+    public static final String FACTION_COLOR = "§6";
 
     protected HumanFaction(SomeFactions plugin) {
         super(plugin);

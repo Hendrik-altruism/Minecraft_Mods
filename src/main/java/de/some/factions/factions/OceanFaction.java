@@ -26,7 +26,7 @@ import static org.bukkit.Material.*;
 
 public class OceanFaction extends AbstractFaction{
     public static final String FACTION_NAME = "ocean";
-    public static final String FACTION_COLOR = "§7";
+    public static final String FACTION_COLOR = "§9";
 
     protected OceanFaction(SomeFactions plugin) {
         super(plugin);
@@ -34,7 +34,12 @@ public class OceanFaction extends AbstractFaction{
 
     @Override
     public void resetEffects(Player player) {
-
+        player.addPotionEffect(
+                new PotionEffect(PotionEffectType.DOLPHINS_GRACE, 99999, 0, false, false));
+        player.addPotionEffect(
+                new PotionEffect(PotionEffectType.CONDUIT_POWER, 99999, 1, false, false));
+        player.addPotionEffect(
+                new PotionEffect(PotionEffectType.LUCK, 99999, 0, false, false));
     }
 
     @Override
