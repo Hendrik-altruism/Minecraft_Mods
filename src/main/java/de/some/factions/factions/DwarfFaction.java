@@ -45,6 +45,14 @@ public class DwarfFaction extends AbstractFactionWithUniqueCraftingRecipes {
             NETHER_GOLD_ORE
     };
 
+    private static final Material[] VEHICLES = {
+            MINECART,
+            FURNACE_MINECART,
+            CHEST_MINECART,
+            HOPPER_MINECART,
+            TNT_MINECART
+    };
+
     public DwarfFaction(SomeFactions plugin) {
         super(plugin, FactionManager.DWARF, "§8");
         ShapedRecipe[] dwarfRecipes = {createIronPickaxeRecipe(), createWoodenPickaxeRecipe()};
@@ -84,6 +92,26 @@ public class DwarfFaction extends AbstractFactionWithUniqueCraftingRecipes {
                         stack.setAmount(stack.getAmount() + 2);
                         item.setItemStack(stack);
                     });
+        }
+    }
+
+    @EventHandler (priority = EventPriority.HIGHEST)
+    public void onPlayerInteractAtEntityEvent(PlayerInteractAtEntityEvent event){
+        System.out.print("Horse");
+        if(event.getRightClicked() instanceof Horse){
+            Horse horse = (Horse) event.getRightClicked();
+            System.out.print("Horse Ride");
+            horse.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 99999, 1, false, false));
+        }
+    }
+
+    @EventHandler (priority = EventPriority.HIGHEST)
+    public void onVehicleEnterEvent(VehicleEnterEvent event){
+        System.out.print("Horse Ride");
+        if(event.getVehicle() instanceof AbstractHorse){
+            AbstractHorse horse = (AbstractHorse) event.getVehicle();
+            System.out.print("Horse Ride");
+            horse.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 99999, 1, false, false));
         }
     }
 
@@ -131,4 +159,6 @@ public class DwarfFaction extends AbstractFactionWithUniqueCraftingRecipes {
         recipe.setIngredient('S', STICK);
         return recipe;
     }
+
+
 }
