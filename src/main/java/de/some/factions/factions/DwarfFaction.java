@@ -96,26 +96,6 @@ public class DwarfFaction extends AbstractFactionWithUniqueCraftingRecipes {
     }
 
     @EventHandler (priority = EventPriority.HIGHEST)
-    public void onPlayerInteractAtEntityEvent(PlayerInteractAtEntityEvent event){
-        System.out.print("Horse");
-        if(event.getRightClicked() instanceof Horse){
-            Horse horse = (Horse) event.getRightClicked();
-            System.out.print("Horse Ride");
-            horse.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 99999, 1, false, false));
-        }
-    }
-
-    @EventHandler (priority = EventPriority.HIGHEST)
-    public void onVehicleEnterEvent(VehicleEnterEvent event){
-        System.out.print("Horse Ride");
-        if(event.getVehicle() instanceof AbstractHorse){
-            AbstractHorse horse = (AbstractHorse) event.getVehicle();
-            System.out.print("Horse Ride");
-            horse.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 99999, 1, false, false));
-        }
-    }
-
-    @EventHandler (priority = EventPriority.HIGHEST)
     public void onVehicleCreateEvent(VehicleCreateEvent event) {
         if (event.getVehicle() instanceof Minecart) {
             Minecart minecart = (Minecart) event.getVehicle();

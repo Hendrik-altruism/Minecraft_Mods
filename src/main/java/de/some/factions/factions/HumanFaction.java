@@ -29,6 +29,33 @@ public class HumanFaction extends AbstractFaction{
                 new PotionEffect(PotionEffectType.INCREASE_DAMAGE, 99999, 0, false, false));
     }
 
+    @EventHandler(priority = EventPriority.HIGHEST)
+    public void onPlayerInteractEntityEvent(PlayerInteractEntityEvent event){
+        System.out.print("Horse");
+        if(event.getRightClicked() instanceof AbstractHorse){
+            AbstractHorse horse = (AbstractHorse) event.getRightClicked();
+            System.out.print("Horse Ride");
+            horse.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 99999, 1, false, false));
+        }
+    }
+
+    @EventHandler (priority = EventPriority.HIGHEST)
+    public void onVehicleEnterEvent(VehicleEnterEvent event){
+        System.out.print("Horse Ride");
+        if(event.getVehicle() instanceof AbstractHorse){
+            AbstractHorse horse = (AbstractHorse) event.getVehicle();
+            System.out.print("Horse Ride");
+            horse.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 99999, 1, false, false));
+        }
+    }
+
+    @EventHandler
+    public void onEvent(PlayerEvent event){
+        if (isEventForFaction(event.getPlayer())) {
+            System.out.println(event.getEventName());
+        }
+    }
+
     @Override
     public void clearEffectsForAll() {
 
