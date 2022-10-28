@@ -27,28 +27,29 @@ public class HumanFaction extends AbstractFaction{
                 new PotionEffect(PotionEffectType.INCREASE_DAMAGE, 99999, 0, false, false));
     }
 
-    @EventHandler(priority = EventPriority.HIGHEST)
-    public void onPlayerInteractEntityEvent(PlayerInteractEntityEvent event){
-        System.out.print("Horse");
-        if(event.getRightClicked() instanceof AbstractHorse){
-            AbstractHorse horse = (AbstractHorse) event.getRightClicked();
+    @EventHandler (priority = EventPriority.HIGHEST)
+    public void onEntityMountEvent(EntityMountEvent event){
+        if(event.getMount() instanceof AbstractHorse && isEventForFaction((Player) event.getEntity())){
+            AbstractHorse horse = (AbstractHorse) event.getMount();
             System.out.print("Horse Ride");
-            horse.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 99999, 1, false, false));
+            horse.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 99999, 5, false, false));
+            horse.addPotionEffect(new PotionEffect(PotionEffectType.JUMP, 99999, 2, false, false));
         }
     }
 
     @EventHandler (priority = EventPriority.HIGHEST)
-    public void onVehicleEnterEvent(VehicleEnterEvent event){
-        System.out.print("Horse Ride");
-        if(event.getVehicle() instanceof AbstractHorse){
-            AbstractHorse horse = (AbstractHorse) event.getVehicle();
+    public void onEntityDisMountEvent(EntityDismountEvent event){
+        if(event.getDismounted() instanceof AbstractHorse && isEventForFaction((Player) event.getEntity())){
+            AbstractHorse horse = (AbstractHorse) event.getDismounted();
             System.out.print("Horse Ride");
-            horse.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 99999, 1, false, false));
+            horse.removePotionEffect(PotionEffectType.SPEED);
+            horse.removePotionEffect(PotionEffectType.JUMP);
         }
     }
 
     @Override
-    public void clearEffectsForAll() {
-
+    public void clearEffectsFor(Player player) {
+        player.removePotionEffect(PotionEffectType.HERO_OF_THE_VILLAGE);
+        player.removePotionEffect(PotionEffectType.INCREASE_DAMAGE);
     }
 }

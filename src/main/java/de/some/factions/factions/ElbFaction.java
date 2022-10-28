@@ -5,6 +5,7 @@ import de.some.factions.SomeFactions;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
+import org.bukkit.entity.AbstractHorse;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -15,6 +16,8 @@ import org.bukkit.inventory.Recipe;
 import org.bukkit.inventory.ShapedRecipe;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
+import org.spigotmc.event.entity.EntityDismountEvent;
+import org.spigotmc.event.entity.EntityMountEvent;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -33,8 +36,8 @@ public class ElbFaction extends AbstractFactionWithUniqueCraftingRecipes {
     }
 
     @Override
-    public void resetEffects(Player player) {
-        player.setWalkSpeed(0.25f);
+    public void setEffectsFor(Player player) {
+        player.setWalkSpeed(0.27f);
         player.addPotionEffect(
                 new PotionEffect(PotionEffectType.JUMP, 99999, 0, false, false));
     }
@@ -59,4 +62,23 @@ public class ElbFaction extends AbstractFactionWithUniqueCraftingRecipes {
         }
     }
 
+    @EventHandler (priority = EventPriority.HIGHEST)
+    public void onEntityMountEvent(EntityMountEvent event){
+        if(event.getMount() instanceof AbstractHorse && isEventForFaction((Player) event.getEntity())){
+            AbstractHorse horse = (AbstractHorse) event.getMount();
+            System.out.print("Horse Ride");
+            horse.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 99999, 3, false, false));
+            horse.addPotionEffect(new PotionEffect(PotionEffectType.JUMP, 99999, 1, false, false));
+        }
+    }
+
+    @EventHandler (priority = EventPriority.HIGHEST)
+    public void onEntityDisMountEvent(EntityDismountEvent event){
+        if(event.getDismounted() instanceof AbstractHorse && isEventForFaction((Player) event.getEntity())){
+            AbstractHorse horse = (AbstractHorse) event.getDismounted();
+            System.out.print("Horse Ride");
+            horse.removePotionEffect(PotionEffectType.SPEED);
+            horse.removePotionEffect(PotionEffectType.JUMP);
+        }
+    }
 }

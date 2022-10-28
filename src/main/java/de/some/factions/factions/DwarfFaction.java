@@ -28,13 +28,21 @@ public class DwarfFaction extends AbstractFactionWithUniqueCraftingRecipes {
 
     private static final Material[] ORES = {
             DIAMOND_ORE,
+            DEEPSLATE_DIAMOND_ORE,
             IRON_ORE,
+            DEEPSLATE_IRON_ORE,
             GOLD_ORE,
+            DEEPSLATE_GOLD_ORE,
             REDSTONE_ORE,
+            DEEPSLATE_REDSTONE_ORE,
             LAPIS_ORE,
+            DEEPSLATE_LAPIS_ORE,
             COPPER_ORE,
+            DEEPSLATE_COPPER_ORE,
             COAL_ORE,
+            DEEPSLATE_COAL_ORE,
             EMERALD_ORE,
+            DEEPSLATE_EMERALD_ORE,
             ANCIENT_DEBRIS,
             NETHER_QUARTZ_ORE,
             NETHER_GOLD_ORE
@@ -88,11 +96,15 @@ public class DwarfFaction extends AbstractFactionWithUniqueCraftingRecipes {
         if(isEventForFaction(event.getPlayer()) &&
                 Arrays.stream(ORES).anyMatch(ore -> event.getBlockState().getBlockData().getMaterial().equals(ore))){
             event.getItems().stream()
-                    .filter(item -> !item.getItemStack().getType().isBlock())
+                    .filter(item -> !item.getItemStack().getType().isBlock()||item.getItemStack().getType()==ANCIENT_DEBRIS)
                     .forEach(item -> {
-                        ItemStack stack = item.getItemStack();
-                        stack.setAmount(stack.getAmount() + 2);
-                        item.setItemStack(stack);
+                        if(item.getItemStack().getType()==ANCIENT_DEBRIS){
+                            item.setItemStack(new ItemStack(NETHERITE_SCRAP, 2));
+                        }else {
+                            ItemStack stack = item.getItemStack();
+                            stack.setAmount(stack.getAmount() + 2);
+                            item.setItemStack(stack);
+                        }
                     });
         }
     }
