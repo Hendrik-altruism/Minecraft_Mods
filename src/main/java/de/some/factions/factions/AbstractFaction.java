@@ -2,6 +2,7 @@ package de.some.factions.factions;
 
 import de.some.factions.FactionManager;
 import de.some.factions.SomeFactions;
+import de.some.factions.events.ChangeFactionEvent;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -55,17 +56,33 @@ public abstract class AbstractFaction implements Listener {
         }
     }
 
+    @EventHandler
+    public void onChangeFactionEvent(ChangeFactionEvent event) {
+        if (this.FACTION_NAME.equals(event.getOldFaction())) {
+            System.out.println("clearing effects for " + event.getPlayer().getName());
+            this.clearEffectsFor(event.getPlayer());
+        }
+        if (this.FACTION_NAME.equals(event.getNewFaction())) {
+            new BukkitRunnable() {
+                @Override
+                public void run() {
+                    filterEvents(event.getPlayer());
+                }
+            }.runTaskLater(plugin, 1);
+        }
+    }
+
     protected boolean isEventForFaction(Player player) {
         String faction = this.factionManager.getFactionOfPlayer(player);
         return faction != null && faction.equals(FACTION_NAME);
     }
     protected void filterEvents(Player player) {
         if (this.isEventForFaction(player)) {
-            this.resetEffects(player);
+            this.setEffectsFor(player);
         }
     }
 
-    public abstract void resetEffects(Player player);
-    public abstract void clearEffectsForAll();
+    public abstract void setEffectsFor(Player player);
+    public abstract void clearEffectsFor(Player player);
 
 }

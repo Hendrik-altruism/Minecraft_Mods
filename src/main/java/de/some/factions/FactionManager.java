@@ -1,9 +1,11 @@
 package de.some.factions;
 
+import org.bukkit.Bukkit;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
+import org.bukkit.scoreboard.*;
 
 import java.io.File;
 import java.io.IOException;
@@ -16,16 +18,18 @@ public class FactionManager {
     public static final String ELB = "elb";
     public static final String DWARF = "dwarf";
     public static final String OCEAN = "ocean";
-    public static final String[] FACTIONS = {ORC, HUMAN, ELB, DWARF, OCEAN};
+    public static final String[] FACTIONS = {HUMAN, ELB, DWARF, OCEAN};
 
     private static final String CONFIG_NAME = "factions.yml";
     private FileConfiguration factionConfig;
 
     private final SomeFactions plugin;
+    private final Scoreboard scoreboard;
 
     public FactionManager(SomeFactions plugin) {
         this.plugin = plugin;
         createFactionConfigFile();
+        scoreboard = this.createFactionScoreboard();
     }
 
     private void createFactionConfigFile() {
@@ -83,6 +87,20 @@ public class FactionManager {
 
     public boolean playerHasFaction(Player player) {
         return getFactionOfPlayer(player) != null;
+    }
+
+    private Scoreboard createFactionScoreboard() {
+        Scoreboard scoreboard = Bukkit.getScoreboardManager().getNewScoreboard();
+        Objective objective = scoreboard.registerNewObjective("faction", Criteria.DUMMY, "Faction");
+
+        objective.setDisplaySlot(DisplaySlot.PLAYER_LIST);
+
+        Score score = objective.getScore("First Line");
+        score.setScore(0);
+
+        //RenderType renderType = objective.getRenderType();
+        //renderType.
+        return scoreboard;
     }
 
 }

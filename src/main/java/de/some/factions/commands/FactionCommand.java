@@ -1,6 +1,8 @@
 package de.some.factions.commands;
 
+import de.some.factions.FactionManager;
 import de.some.factions.SomeFactions;
+import de.some.factions.events.ChangeFactionEvent;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -40,7 +42,9 @@ public class FactionCommand implements CommandExecutor, TabCompleter {
                             sender.sendMessage("You already have a Faction!");
                             return true;
                         }
+                        String oldFaction = plugin.getFactionManager().getFactionOfPlayer(player);
                         boolean res = plugin.getFactionManager().setFactionOfPlayer(player, args[1]);
+                        Bukkit.getPluginManager().callEvent(new ChangeFactionEvent(player, args[2], oldFaction));
                         if (res) {
                             sender.sendMessage("You are now a(n) " + args[1] + "!");
                         } else {
@@ -77,7 +81,9 @@ public class FactionCommand implements CommandExecutor, TabCompleter {
                             sender.sendMessage(args[1] + " is not a known Player.");
                             return false;
                         }
+                        String oldFaction = plugin.getFactionManager().getFactionOfPlayer(player);
                         boolean res = plugin.getFactionManager().setFactionOfPlayer(player, args[2]);
+                        Bukkit.getPluginManager().callEvent(new ChangeFactionEvent(player, args[2], oldFaction));
                         if (res) {
                             sender.sendMessage(args [1] + " is now a(n) " + args[2] + "!");
                         } else {

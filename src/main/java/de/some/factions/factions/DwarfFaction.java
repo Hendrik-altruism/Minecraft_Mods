@@ -63,7 +63,7 @@ public class DwarfFaction extends AbstractFactionWithUniqueCraftingRecipes {
     }
 
     @Override
-    public void resetEffects(Player player) {
+    public void setEffectsFor(Player player) {
         player.setWalkSpeed(0.15f);
         player.addPotionEffect(
                 new PotionEffect(PotionEffectType.FAST_DIGGING, 99999, 1, false, false));
@@ -72,8 +72,10 @@ public class DwarfFaction extends AbstractFactionWithUniqueCraftingRecipes {
     }
 
     @Override
-    public void clearEffectsForAll() {
-
+    public void clearEffectsFor(Player player) {
+        player.setWalkSpeed(0.2f);
+        player.removePotionEffect(PotionEffectType.FAST_DIGGING);
+        player.removePotionEffect(PotionEffectType.DAMAGE_RESISTANCE);
     }
 
     @EventHandler (priority = EventPriority.HIGHEST)

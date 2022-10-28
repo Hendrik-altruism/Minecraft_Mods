@@ -40,8 +40,9 @@ public class ElbFaction extends AbstractFactionWithUniqueCraftingRecipes {
     }
 
     @Override
-    public void clearEffectsForAll() {
-
+    public void clearEffectsFor(Player player) {
+        player.setWalkSpeed(0.2f);
+        player.removePotionEffect(PotionEffectType.JUMP);
     }
 
     @EventHandler (priority = EventPriority.HIGHEST)

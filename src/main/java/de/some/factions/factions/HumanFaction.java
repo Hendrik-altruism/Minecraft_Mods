@@ -4,14 +4,12 @@ import de.some.factions.FactionManager;
 import de.some.factions.SomeFactions;
 import org.bukkit.entity.AbstractHorse;
 import org.bukkit.entity.Player;
-import org.bukkit.event.Event;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
-import org.bukkit.event.player.PlayerEvent;
-import org.bukkit.event.player.PlayerInteractEntityEvent;
-import org.bukkit.event.vehicle.VehicleEnterEvent;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
+import org.spigotmc.event.entity.EntityDismountEvent;
+import org.spigotmc.event.entity.EntityMountEvent;
 
 
 public class HumanFaction extends AbstractFaction{
@@ -22,7 +20,7 @@ public class HumanFaction extends AbstractFaction{
     }
 
     @Override
-    public void resetEffects(Player player) {
+    public void setEffectsFor(Player player) {
         player.addPotionEffect(
                 new PotionEffect(PotionEffectType.HERO_OF_THE_VILLAGE, 99999, 0, false, false));
         player.addPotionEffect(
@@ -46,13 +44,6 @@ public class HumanFaction extends AbstractFaction{
             AbstractHorse horse = (AbstractHorse) event.getVehicle();
             System.out.print("Horse Ride");
             horse.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 99999, 1, false, false));
-        }
-    }
-
-    @EventHandler
-    public void onEvent(PlayerEvent event){
-        if (isEventForFaction(event.getPlayer())) {
-            System.out.println(event.getEventName());
         }
     }
 
