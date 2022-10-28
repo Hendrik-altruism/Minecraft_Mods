@@ -54,7 +54,7 @@ public class ElbFaction extends AbstractFactionWithUniqueCraftingRecipes {
         Player player = event.getEnchanter();
         if (!isEventForFaction(player)) {
             event.setCancelled(true);
-            player.sendMessage("$oYou are not worthy enough to use this holy table. Only an §2Elb$r$o my use it!");
+            player.sendMessage("§oYou are not worthy enough to use this holy table. Only an §2Elb§r§o my use it!");
         }
     }
 

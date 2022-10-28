@@ -2,32 +2,13 @@ package de.some.factions.factions;
 
 import de.some.factions.FactionManager;
 import de.some.factions.SomeFactions;
-import org.bukkit.Bukkit;
-import org.bukkit.Material;
-import org.bukkit.NamespacedKey;
-import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.EventPriority;
-import org.bukkit.event.block.BlockBreakEvent;
-import org.bukkit.event.block.BlockDropItemEvent;
-import org.bukkit.event.inventory.PrepareItemCraftEvent;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.Recipe;
-import org.bukkit.inventory.ShapedRecipe;
-import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-
-import static org.bukkit.Material.*;
-
-
 public class OceanFaction extends AbstractFaction{
 
-    protected OceanFaction(SomeFactions plugin) {
+    public OceanFaction(SomeFactions plugin) {
         super(plugin, FactionManager.OCEAN, "$9");
     }
 

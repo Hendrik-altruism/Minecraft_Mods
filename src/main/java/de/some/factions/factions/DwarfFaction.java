@@ -6,18 +6,13 @@ import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.enchantments.Enchantment;
-import org.bukkit.entity.AbstractHorse;
-import org.bukkit.entity.Horse;
 import org.bukkit.entity.Minecart;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockDropItemEvent;
-import org.bukkit.event.player.PlayerInteractAtEntityEvent;
-import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.vehicle.VehicleCreateEvent;
-import org.bukkit.event.vehicle.VehicleEnterEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.ShapedRecipe;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -55,7 +50,12 @@ public class DwarfFaction extends AbstractFactionWithUniqueCraftingRecipes {
 
     public DwarfFaction(SomeFactions plugin) {
         super(plugin, FactionManager.DWARF, "§8");
-        ShapedRecipe[] dwarfRecipes = {createIronPickaxeRecipe(), createWoodenPickaxeRecipe()};
+        ShapedRecipe[] dwarfRecipes = {
+                createIronPickaxeRecipe(),
+                createWoodenPickaxeRecipe(),
+                createGoldPickaxe(),
+                createDiamondPickaxe()
+            };
         Arrays.stream(dwarfRecipes).forEach(recipe -> {
             this.uniqueRecipes.add(recipe.getKey());
             Bukkit.addRecipe(recipe);
@@ -140,7 +140,6 @@ public class DwarfFaction extends AbstractFactionWithUniqueCraftingRecipes {
         recipe.setIngredient('S', STICK);
         return recipe;
     }
-
     private ShapedRecipe createIronPickaxeRecipe() {
         ItemStack item = new ItemStack(IRON_PICKAXE);
         ItemMeta itemMeta = item.getItemMeta();
@@ -159,6 +158,44 @@ public class DwarfFaction extends AbstractFactionWithUniqueCraftingRecipes {
         recipe.setIngredient('S', STICK);
         return recipe;
     }
-
+    private ShapedRecipe createGoldPickaxe() {
+        ItemStack item = new ItemStack(GOLDEN_PICKAXE);
+        ItemMeta itemMeta = item.getItemMeta();
+        itemMeta.setDisplayName(FACTION_COLOR + "Dwarfen Gold Pickaxe");
+        ArrayList<String> lore = new ArrayList<>();
+        lore.add("§7Heavier, luckier and just better.");
+        lore.add("§7A really fancy Pickaxe!");
+        itemMeta.setLore(lore);
+        item.setItemMeta(itemMeta);
+        item.addEnchantment(Enchantment.LOOT_BONUS_BLOCKS, 2);
+        item.addEnchantment(Enchantment.MENDING, 1);
+        item.addEnchantment(Enchantment.DIG_SPEED, 2);
+        NamespacedKey namespacedKey = new NamespacedKey(plugin, "dwarf_gold_pickaxe");
+        ShapedRecipe recipe = new ShapedRecipe(namespacedKey, item);
+        recipe.shape("GGG", " S ", " S ");
+        recipe.setIngredient('G', GOLD_BLOCK);
+        recipe.setIngredient('S', STICK);
+        return recipe;
+    }
+    private ShapedRecipe createDiamondPickaxe() {
+        ItemStack item = new ItemStack(DIAMOND_PICKAXE);
+        ItemMeta itemMeta = item.getItemMeta();
+        itemMeta.setDisplayName(FACTION_COLOR + "Dwarfen Diamond Pickaxe");
+        ArrayList<String> lore = new ArrayList<>();
+        lore.add("§7Heavier, Stronger and just better.");
+        lore.add("§7A really awesome Pickaxe!");
+        itemMeta.setLore(lore);
+        item.setItemMeta(itemMeta);
+        item.addEnchantment(Enchantment.LOOT_BONUS_BLOCKS, 2);
+        item.addEnchantment(Enchantment.MENDING, 1);
+        item.addEnchantment(Enchantment.DIG_SPEED, 4);
+        item.addEnchantment(Enchantment.DURABILITY, 2);
+        NamespacedKey namespacedKey = new NamespacedKey(plugin, "dwarf_diamond_pickaxe");
+        ShapedRecipe recipe = new ShapedRecipe(namespacedKey, item);
+        recipe.shape("DDD", " S ", " S ");
+        recipe.setIngredient('D', DIAMOND_BLOCK);
+        recipe.setIngredient('S', STICK);
+        return recipe;
+    }
 
 }

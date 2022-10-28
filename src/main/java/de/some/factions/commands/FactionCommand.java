@@ -72,14 +72,14 @@ public class FactionCommand implements CommandExecutor, TabCompleter {
                         return true;
                     }
                     if (args.length >= 3 && Arrays.stream(FACTIONS).anyMatch(e -> e.equals(args[2]))) {
-                        Player player = Bukkit.getPlayer(args[2]);
+                        Player player = Bukkit.getPlayer(args[1]);
                         if (player == null) {
                             sender.sendMessage(args[1] + " is not a known Player.");
                             return false;
                         }
-                        boolean res = plugin.getFactionManager().setFactionOfPlayer(player, args[1]);
+                        boolean res = plugin.getFactionManager().setFactionOfPlayer(player, args[2]);
                         if (res) {
-                            sender.sendMessage(args [1] + " is now a(n) " + args[1] + "!");
+                            sender.sendMessage(args [1] + " is now a(n) " + args[2] + "!");
                         } else {
                             sender.sendMessage("Something went wrong...");
                         }
