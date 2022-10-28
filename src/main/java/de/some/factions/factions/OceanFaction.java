@@ -20,7 +20,7 @@ import static org.bukkit.Material.*;
 public class OceanFaction extends AbstractFactionWithUniqueCraftingRecipes {
 
     public OceanFaction(SomeFactions plugin) {
-        super(plugin, FactionManager.OCEAN, "$9");
+        super(plugin, FactionManager.OCEAN, "§9");
         ShapedRecipe[] dwarfRecipes = {
                 createTravelTrident(),
                 createAlphaTrident()
