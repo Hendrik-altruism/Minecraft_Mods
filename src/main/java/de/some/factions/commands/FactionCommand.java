@@ -1,5 +1,6 @@
 package de.some.factions.commands;
 
+import de.some.factions.Faction;
 import de.some.factions.FactionManager;
 import de.some.factions.SomeFactions;
 import de.some.factions.events.ChangeFactionEvent;
@@ -16,7 +17,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static de.some.factions.FactionManager.FACTIONS;
+import static de.some.factions.Faction.FACTIONS;
+import static de.some.factions.Faction.NO_FACTION;
 
 
 public class FactionCommand implements CommandExecutor, TabCompleter {
@@ -36,15 +38,17 @@ public class FactionCommand implements CommandExecutor, TabCompleter {
         } else {
             switch (args[0]) {
                 case "join": // sc join <class>
-                    if (args.length >= 2 && Arrays.stream(FACTIONS).anyMatch(e -> e.equals(args[1]))) {
+                    if (args.length >= 2 &&
+                            Arrays.stream(FACTIONS).map(Faction::toString).anyMatch(e -> e.equals(args[1]))) {
                         Player player = Bukkit.getPlayer(sender.getName());
+                        Faction newFaction = Faction.fromString(args[1]);
                         if (plugin.getFactionManager().playerHasFaction(player)) {
                             sender.sendMessage("You already have a Faction!");
                             return true;
                         }
-                        String oldFaction = plugin.getFactionManager().getFactionOfPlayer(player);
-                        boolean res = plugin.getFactionManager().setFactionOfPlayer(player, args[1]);
-                        Bukkit.getPluginManager().callEvent(new ChangeFactionEvent(player, args[2], oldFaction));
+                        Faction oldFaction = plugin.getFactionManager().getFactionOfPlayer(player);
+                        boolean res = plugin.getFactionManager().setFactionOfPlayer(player, newFaction);
+                        Bukkit.getPluginManager().callEvent(new ChangeFactionEvent(player, newFaction, oldFaction));
                         if (res) {
                             sender.sendMessage("You are now a(n) " + args[1] + "!");
                         } else {
@@ -53,14 +57,14 @@ public class FactionCommand implements CommandExecutor, TabCompleter {
                         }
                     } else {
                         sender.sendMessage("You need to choose a Faction. You can choose from: " +
-                                Arrays.stream(FACTIONS).reduce((e1, e2) -> e1 + ", " + e2).get());
+                                Arrays.stream(FACTIONS).map(Faction::toString).reduce((e1, e2) -> e1 + ", " + e2).get());
                     }
                     break;
                 case "get": // sc get <PlayerName>
                     if (args.length >= 2) {
                         Player player = Bukkit.getPlayer(args[1]);
-                        String faction = plugin.getFactionManager().getFactionOfPlayer(player);
-                        if (faction != null) {
+                        Faction faction = plugin.getFactionManager().getFactionOfPlayer(player);
+                        if (faction != NO_FACTION) {
                             sender.sendMessage(player.getName()+ " is an " + faction);
                         } else {
                             sender.sendMessage(player.getName() + " has no Faction... :(");
@@ -75,15 +79,17 @@ public class FactionCommand implements CommandExecutor, TabCompleter {
                         sender.sendMessage("You have no permission to execute this Command.");
                         return true;
                     }
-                    if (args.length >= 3 && Arrays.stream(FACTIONS).anyMatch(e -> e.equals(args[2]))) {
+                    if (args.length >= 3 &&
+                            Arrays.stream(FACTIONS).map(Faction::toString).anyMatch(e -> e.equals(args[2]))) {
                         Player player = Bukkit.getPlayer(args[1]);
                         if (player == null) {
                             sender.sendMessage(args[1] + " is not a known Player.");
                             return false;
                         }
-                        String oldFaction = plugin.getFactionManager().getFactionOfPlayer(player);
-                        boolean res = plugin.getFactionManager().setFactionOfPlayer(player, args[2]);
-                        Bukkit.getPluginManager().callEvent(new ChangeFactionEvent(player, args[2], oldFaction));
+                        Faction oldFaction = plugin.getFactionManager().getFactionOfPlayer(player);
+                        Faction newFaction = Faction.fromString(args[2]);
+                        boolean res = plugin.getFactionManager().setFactionOfPlayer(player, newFaction);
+                        Bukkit.getPluginManager().callEvent(new ChangeFactionEvent(player, newFaction, oldFaction));
                         if (res) {
                             sender.sendMessage(args [1] + " is now a(n) " + args[2] + "!");
                         } else {
@@ -91,7 +97,7 @@ public class FactionCommand implements CommandExecutor, TabCompleter {
                         }
                     } else {
                         sender.sendMessage("You need to choose a PlayerName and a Faction. You can choose from: " +
-                                Arrays.stream(FACTIONS).reduce((e1, e2) -> e1 + ", " + e2).get());
+                                Arrays.stream(FACTIONS).map(Faction::toString).reduce((e1, e2) -> e1 + ", " + e2).get());
                     }
                     break;
                 default:
@@ -123,12 +129,14 @@ public class FactionCommand implements CommandExecutor, TabCompleter {
                                 .collect(Collectors.toList());
                     case "join":
                         return Arrays.stream(FACTIONS)
+                                .map(Faction::toString)
                                 .collect(Collectors.toList());
                     default:
                         return list;
                 }
             case 3:
                 return Arrays.stream(FACTIONS)
+                        .map(Faction::toString)
                         .collect(Collectors.toList());
         }
         return list;

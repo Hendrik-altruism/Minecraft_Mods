@@ -1,6 +1,6 @@
 package de.some.factions.factions;
 
-import de.some.factions.FactionManager;
+import de.some.factions.Faction;
 import de.some.factions.SomeFactions;
 import org.bukkit.Bukkit;
 import org.bukkit.NamespacedKey;
@@ -20,7 +20,7 @@ import static org.bukkit.Material.*;
 public class OceanFaction extends AbstractFactionWithUniqueCraftingRecipes {
 
     public OceanFaction(SomeFactions plugin) {
-        super(plugin, FactionManager.OCEAN, "§9");
+        super(plugin, Faction.OCEAN);
         ShapedRecipe[] dwarfRecipes = {
                 createTravelTrident(),
                 createAlphaTrident()
@@ -51,7 +51,7 @@ public class OceanFaction extends AbstractFactionWithUniqueCraftingRecipes {
     private ShapedRecipe createAlphaTrident() {
         ItemStack item = new ItemStack(TRIDENT);
         ItemMeta itemMeta = item.getItemMeta();
-        itemMeta.setDisplayName(FACTION_COLOR + "Thors Trident");
+        itemMeta.setDisplayName(faction.getColor() + "Thors Trident");
         ArrayList<String> lore = new ArrayList<>();
         lore.add("§9What is dead will never die.");
         lore.add("§9Become Thor himself.");
@@ -75,7 +75,7 @@ public class OceanFaction extends AbstractFactionWithUniqueCraftingRecipes {
     private ShapedRecipe createTravelTrident() {
         ItemStack item = new ItemStack(TRIDENT);
         ItemMeta itemMeta = item.getItemMeta();
-        itemMeta.setDisplayName(FACTION_COLOR + "Travel Trident");
+        itemMeta.setDisplayName(faction.getColor() + "Travel Trident");
         ArrayList<String> lore = new ArrayList<>();
         lore.add("§9Speed");
         itemMeta.setLore(lore);

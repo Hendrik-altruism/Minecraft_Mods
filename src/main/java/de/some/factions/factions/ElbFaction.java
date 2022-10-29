@@ -1,10 +1,8 @@
 package de.some.factions.factions;
 
-import de.some.factions.FactionManager;
+import de.some.factions.Faction;
 import de.some.factions.SomeFactions;
-import org.bukkit.Bukkit;
 import org.bukkit.Material;
-import org.bukkit.NamespacedKey;
 import org.bukkit.entity.AbstractHorse;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -26,7 +24,7 @@ import java.util.stream.Collectors;
 public class ElbFaction extends AbstractFactionWithUniqueCraftingRecipes {
 
     public ElbFaction(SomeFactions plugin) {
-        super(plugin, FactionManager.ELB, "$2");
+        super(plugin, Faction.ELB);
         List<Recipe> enchantTableRecipe = plugin.getServer().getRecipesFor(new ItemStack(Material.ENCHANTING_TABLE));
         this.uniqueRecipes.addAll(
                 enchantTableRecipe.stream()

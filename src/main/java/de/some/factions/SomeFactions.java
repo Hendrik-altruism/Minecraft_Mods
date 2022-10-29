@@ -20,6 +20,7 @@ public final class SomeFactions extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new ElbFaction(this), this);
         getServer().getPluginManager().registerEvents(new HumanFaction(this), this);
         getServer().getPluginManager().registerEvents(new OceanFaction(this), this);
+        getServer().getPluginManager().registerEvents(new FactionTabListScoreboard(factionManager), this);
 
         getCommand("test").setExecutor(new TestCommand(this));
         getCommand("faction").setExecutor(new FactionCommand(this));

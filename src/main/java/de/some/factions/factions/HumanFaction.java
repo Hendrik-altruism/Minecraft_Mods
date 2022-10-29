@@ -1,6 +1,6 @@
 package de.some.factions.factions;
 
-import de.some.factions.FactionManager;
+import de.some.factions.Faction;
 import de.some.factions.SomeFactions;
 import org.bukkit.entity.AbstractHorse;
 import org.bukkit.entity.Player;
@@ -16,7 +16,7 @@ public class HumanFaction extends AbstractFaction{
 
 
     public HumanFaction(SomeFactions plugin) {
-        super(plugin, FactionManager.HUMAN, "§6");
+        super(plugin, Faction.HUMAN);
     }
 
     @Override

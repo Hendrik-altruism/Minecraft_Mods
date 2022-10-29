@@ -22,6 +22,7 @@ import org.bukkit.potion.PotionEffectType;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import static de.some.factions.Faction.DWARF;
 import static org.bukkit.Material.*;
 
 public class DwarfFaction extends AbstractFactionWithUniqueCraftingRecipes {
@@ -57,7 +58,7 @@ public class DwarfFaction extends AbstractFactionWithUniqueCraftingRecipes {
     };
 
     public DwarfFaction(SomeFactions plugin) {
-        super(plugin, FactionManager.DWARF, "§8");
+        super(plugin, DWARF);
         ShapedRecipe[] dwarfRecipes = {
                 createIronPickaxeRecipe(),
                 createWoodenPickaxeRecipe(),
@@ -120,7 +121,7 @@ public class DwarfFaction extends AbstractFactionWithUniqueCraftingRecipes {
     private ShapedRecipe createWoodenPickaxeRecipe() {
         ItemStack item = new ItemStack(WOODEN_PICKAXE);
         ItemMeta itemMeta = item.getItemMeta();
-        itemMeta.setDisplayName(FACTION_COLOR + "Dwarfen Wooden Pickaxe");
+        itemMeta.setDisplayName(faction.getColor() + "Dwarfen Wooden Pickaxe");
         ArrayList<String> lore = new ArrayList<>();
         lore.add("§7Heavier, stronger and just better.");
         lore.add("§7This is good enough for now.");
@@ -137,7 +138,7 @@ public class DwarfFaction extends AbstractFactionWithUniqueCraftingRecipes {
     private ShapedRecipe createIronPickaxeRecipe() {
         ItemStack item = new ItemStack(IRON_PICKAXE);
         ItemMeta itemMeta = item.getItemMeta();
-        itemMeta.setDisplayName(FACTION_COLOR + "Dwarfen Iron Pickaxe");
+        itemMeta.setDisplayName(faction.getColor() + "Dwarfen Iron Pickaxe");
         ArrayList<String> lore = new ArrayList<>();
         lore.add("§7Heavier, stronger and just better.");
         lore.add("§7A real Iron Pickaxe!");
@@ -155,7 +156,7 @@ public class DwarfFaction extends AbstractFactionWithUniqueCraftingRecipes {
     private ShapedRecipe createGoldPickaxe() {
         ItemStack item = new ItemStack(GOLDEN_PICKAXE);
         ItemMeta itemMeta = item.getItemMeta();
-        itemMeta.setDisplayName(FACTION_COLOR + "Dwarfen Gold Pickaxe");
+        itemMeta.setDisplayName(faction.getColor() + "Dwarfen Gold Pickaxe");
         ArrayList<String> lore = new ArrayList<>();
         lore.add("§7Heavier, luckier and just better.");
         lore.add("§7A really fancy Pickaxe!");
@@ -174,7 +175,7 @@ public class DwarfFaction extends AbstractFactionWithUniqueCraftingRecipes {
     private ShapedRecipe createDiamondPickaxe() {
         ItemStack item = new ItemStack(DIAMOND_PICKAXE);
         ItemMeta itemMeta = item.getItemMeta();
-        itemMeta.setDisplayName(FACTION_COLOR + "Dwarfen Diamond Pickaxe");
+        itemMeta.setDisplayName(faction.getColor() + "Dwarfen Diamond Pickaxe");
         ArrayList<String> lore = new ArrayList<>();
         lore.add("§7Heavier, Stronger and just better.");
         lore.add("§7A really awesome Pickaxe!");

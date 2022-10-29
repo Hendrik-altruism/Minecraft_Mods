@@ -1,5 +1,6 @@
 package de.some.factions.factions;
 
+import de.some.factions.Faction;
 import de.some.factions.FactionManager;
 import de.some.factions.SomeFactions;
 import de.some.factions.events.ChangeFactionEvent;
@@ -16,16 +17,14 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 public abstract class AbstractFaction implements Listener {
 
-    public final String FACTION_NAME;
-    public final String FACTION_COLOR;
+    public final Faction faction;
     protected final FactionManager factionManager;
     protected final SomeFactions plugin;
 
-    protected AbstractFaction (SomeFactions plugin, String FACTION_NAME, String FACTION_COLOR) {
+    protected AbstractFaction (SomeFactions plugin, Faction faction) {
         this.factionManager = plugin.getFactionManager();
         this.plugin = plugin;
-        this.FACTION_NAME = FACTION_NAME;
-        this.FACTION_COLOR = FACTION_COLOR;
+        this.faction = faction;
     }
 
     @EventHandler
@@ -58,11 +57,11 @@ public abstract class AbstractFaction implements Listener {
 
     @EventHandler
     public void onChangeFactionEvent(ChangeFactionEvent event) {
-        if (this.FACTION_NAME.equals(event.getOldFaction())) {
+        if (this.faction.equals(event.getOldFaction())) {
             System.out.println("clearing effects for " + event.getPlayer().getName());
             this.clearEffectsFor(event.getPlayer());
         }
-        if (this.FACTION_NAME.equals(event.getNewFaction())) {
+        if (this.faction.equals(event.getNewFaction())) {
             new BukkitRunnable() {
                 @Override
                 public void run() {
@@ -73,8 +72,8 @@ public abstract class AbstractFaction implements Listener {
     }
 
     protected boolean isEventForFaction(Player player) {
-        String faction = this.factionManager.getFactionOfPlayer(player);
-        return faction != null && faction.equals(FACTION_NAME);
+        Faction playerFaction = this.factionManager.getFactionOfPlayer(player);
+        return faction.equals(playerFaction);
     }
     protected void filterEvents(Player player) {
         if (this.isEventForFaction(player)) {

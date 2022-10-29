@@ -1,5 +1,6 @@
 package de.some.factions.factions;
 
+import de.some.factions.Faction;
 import de.some.factions.SomeFactions;
 import org.bukkit.Bukkit;
 import org.bukkit.NamespacedKey;
@@ -15,8 +16,8 @@ public abstract class AbstractFactionWithUniqueCraftingRecipes extends AbstractF
 
     protected final ArrayList<NamespacedKey> uniqueRecipes;
     
-    protected AbstractFactionWithUniqueCraftingRecipes(SomeFactions plugin, String FACTION_NAME, String FACTION_COLOR) {
-        super(plugin, FACTION_NAME, FACTION_COLOR);
+    protected AbstractFactionWithUniqueCraftingRecipes(SomeFactions plugin, Faction faction) {
+        super(plugin, faction);
         uniqueRecipes = new ArrayList<>();
     }
 
