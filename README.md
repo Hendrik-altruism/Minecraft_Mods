@@ -18,9 +18,11 @@ For travelling, they can use faster Minecarts, since they can walk a little slow
 ![](documentation/iron_pickaxe.png)
 ![](documentation/gold_pickaxe.png)
 ![](documentation/diamond_pickaxe.png)
+![](documentation/iron_axe.png)
+![](documentation/diamond_axe.png)
 
 ### Elbs
-Elbs are the only Faction which can use the Crafting Table.
+Elbs are the only Faction which can use the Enchantment Table.
 They walk and run faster and can jump higher.
 
 ### Oceanic
@@ -30,6 +32,8 @@ They can also craft two Trident Versions.
 The recipes are as follows:
 ![](documentation/travel_trident.png)
 ![](documentation/thors_trident.png)
+![](documentation/pufferfish_helmet_reciepe.png)
+![](documentation/pufferfish_helmet_info.png)
 
 ----
 

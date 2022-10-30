@@ -3,12 +3,14 @@ package de.some.factions.factions;
 import de.some.factions.Faction;
 import de.some.factions.SomeFactions;
 import org.bukkit.Bukkit;
+import org.bukkit.Color;
 import org.bukkit.NamespacedKey;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.ShapedRecipe;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.inventory.meta.LeatherArmorMeta;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
@@ -22,6 +24,7 @@ public class OceanFaction extends AbstractFactionWithUniqueCraftingRecipes {
     public OceanFaction(SomeFactions plugin) {
         super(plugin, Faction.OCEAN);
         ShapedRecipe[] dwarfRecipes = {
+                createTheLegendaryCrownOfThePufferfish(),
                 createTravelTrident(),
                 createAlphaTrident()
         };
@@ -46,6 +49,26 @@ public class OceanFaction extends AbstractFactionWithUniqueCraftingRecipes {
         player.removePotionEffect(PotionEffectType.DOLPHINS_GRACE);
         player.removePotionEffect(PotionEffectType.CONDUIT_POWER);
         player.removePotionEffect(PotionEffectType.LUCK);
+    }
+
+    private ShapedRecipe createTheLegendaryCrownOfThePufferfish() {
+        ItemStack item = new ItemStack(LEATHER_HELMET);
+        LeatherArmorMeta itemMeta = (LeatherArmorMeta) item.getItemMeta();
+        itemMeta.setDisplayName(faction.getColor() + "The legendary crown of the mighty Pufferfish");
+        itemMeta.setColor(Color.YELLOW);
+        ArrayList<String> lore = new ArrayList<>();
+        lore.add("§9The Pufferfish is one with the crown and the crown is with the Pufferfish.");
+        lore.add("§9Use it and create the kingdom of the mighty Pufferfish!");
+        itemMeta.setLore(lore);
+        item.setItemMeta(itemMeta);
+        item.addEnchantment(Enchantment.WATER_WORKER, 1);
+        item.addEnchantment(Enchantment.MENDING, 1);
+        NamespacedKey namespacedKey = new NamespacedKey(plugin, "helmet_of_the_pufferfish");
+        ShapedRecipe recipe = new ShapedRecipe(namespacedKey, item);
+        recipe.shape("LLL", "LPL", "   ");
+        recipe.setIngredient('L', LEATHER);
+        recipe.setIngredient('P', PUFFERFISH);
+        return recipe;
     }
 
     private ShapedRecipe createAlphaTrident() {

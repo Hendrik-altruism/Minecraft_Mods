@@ -63,7 +63,9 @@ public class DwarfFaction extends AbstractFactionWithUniqueCraftingRecipes {
                 createIronPickaxeRecipe(),
                 createWoodenPickaxeRecipe(),
                 createGoldPickaxe(),
-                createDiamondPickaxe()
+                createDiamondPickaxe(),
+                createIronCombatAxe(),
+                createDiamondCombatAxe()
             };
         Arrays.stream(dwarfRecipes).forEach(recipe -> {
             this.uniqueRecipes.add(recipe.getKey());
@@ -114,7 +116,6 @@ public class DwarfFaction extends AbstractFactionWithUniqueCraftingRecipes {
     public void onVehicleCreateEvent(VehicleCreateEvent event) {
         if (event.getVehicle() instanceof Minecart) {
             Minecart minecart = (Minecart) event.getVehicle();
-            System.out.println("Speed changed from: "+minecart.getMaxSpeed());
             minecart.setMaxSpeed(.8);
         }
     }
@@ -162,8 +163,8 @@ public class DwarfFaction extends AbstractFactionWithUniqueCraftingRecipes {
         lore.add("§7A really fancy Pickaxe!");
         itemMeta.setLore(lore);
         item.setItemMeta(itemMeta);
-        item.addEnchantment(Enchantment.LOOT_BONUS_BLOCKS, 2);
-        item.addEnchantment(Enchantment.MENDING, 1);
+        item.addEnchantment(Enchantment.SILK_TOUCH, 1);
+        item.addEnchantment(Enchantment.DURABILITY, 3);
         item.addEnchantment(Enchantment.DIG_SPEED, 2);
         NamespacedKey namespacedKey = new NamespacedKey(plugin, "dwarf_gold_pickaxe");
         ShapedRecipe recipe = new ShapedRecipe(namespacedKey, item);
@@ -193,4 +194,47 @@ public class DwarfFaction extends AbstractFactionWithUniqueCraftingRecipes {
         return recipe;
     }
 
+    private ShapedRecipe createIronCombatAxe() {
+        ItemStack item = new ItemStack(IRON_AXE);
+        ItemMeta itemMeta = item.getItemMeta();
+        itemMeta.setDisplayName(faction.getColor() + "Dwarfen Iron Axe");
+        ArrayList<String> lore = new ArrayList<>();
+        lore.add("§7Heavier, stronger and just better.");
+        lore.add("§7The beloved Weapon of most dwarfs!");
+        itemMeta.setLore(lore);
+        item.setItemMeta(itemMeta);
+        item.addEnchantment(Enchantment.DURABILITY, 2);
+        item.addEnchantment(Enchantment.DAMAGE_ALL, 3);
+        item.addUnsafeEnchantment(Enchantment.LOOT_BONUS_MOBS, 2);
+        // item.addEnchantment(Enchantment.KNOCKBACK, 1);
+        NamespacedKey namespacedKey = new NamespacedKey(plugin, "dwarf_iron_axe");
+        ShapedRecipe recipe = new ShapedRecipe(namespacedKey, item);
+        recipe.shape(" II", " SI", " S ");
+        recipe.setIngredient('I', IRON_BLOCK);
+        recipe.setIngredient('S', STICK);
+        return recipe;
+    }
+    private ShapedRecipe createDiamondCombatAxe() {
+        ItemStack item = new ItemStack(DIAMOND_AXE);
+        ItemMeta itemMeta = item.getItemMeta();
+        itemMeta.setDisplayName(faction.getColor() + "Dwarfen Diamond Axe");
+        ArrayList<String> lore = new ArrayList<>();
+        lore.add("§7Heavier, stronger and just better.");
+        lore.add("§7It is said that a dwarf with an Axe");
+        lore.add("§7 is better than 100 Elbs!");
+        itemMeta.setLore(lore);
+        item.setItemMeta(itemMeta);
+        item.addEnchantment(Enchantment.DURABILITY, 2);
+        item.addEnchantment(Enchantment.DAMAGE_ALL, 4);
+        // item.addEnchantment(Enchantment.LOOT_BONUS_MOBS, 2);
+        item.addUnsafeEnchantment(Enchantment.KNOCKBACK, 2);
+        item.addEnchantment(Enchantment.MENDING, 1);
+        item.addUnsafeEnchantment(Enchantment.FIRE_ASPECT, 1);
+        NamespacedKey namespacedKey = new NamespacedKey(plugin, "dwarf_diamond_axe");
+        ShapedRecipe recipe = new ShapedRecipe(namespacedKey, item);
+        recipe.shape(" DD", " SD", " S ");
+        recipe.setIngredient('D', DIAMOND_BLOCK);
+        recipe.setIngredient('S', STICK);
+        return recipe;
+    }
 }
