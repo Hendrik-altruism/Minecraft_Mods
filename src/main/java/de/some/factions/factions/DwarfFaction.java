@@ -12,6 +12,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockDropItemEvent;
+import org.bukkit.event.entity.EntityPotionEffectEvent;
 import org.bukkit.event.vehicle.VehicleCreateEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.ShapedRecipe;
@@ -77,9 +78,9 @@ public class DwarfFaction extends AbstractFactionWithUniqueCraftingRecipes {
     public void setEffectsFor(Player player) {
         player.setWalkSpeed(0.15f);
         player.addPotionEffect(
-                new PotionEffect(PotionEffectType.FAST_DIGGING, 99999, 1, false, false));
+                new PotionEffect(PotionEffectType.FAST_DIGGING, DURATION, 1, false, false));
         player.addPotionEffect(
-                new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, 99999, 0, false, false));
+                new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, DURATION, 0, false, false));
     }
 
     @Override
@@ -90,20 +91,16 @@ public class DwarfFaction extends AbstractFactionWithUniqueCraftingRecipes {
     }
 
     @EventHandler (priority = EventPriority.HIGHEST)
-    public void onBlockBreakEvent(BlockBreakEvent event) {
-        if(event.getBlock().getBlockData().getMaterial() == DIAMOND_ORE){}
-    }
-
-    @EventHandler (priority = EventPriority.HIGHEST)
     public void onBlockDropItemEvent(BlockDropItemEvent event) {
         if(isEventForFaction(event.getPlayer()) &&
                 Arrays.stream(ORES).anyMatch(ore -> event.getBlockState().getBlockData().getMaterial().equals(ore))){
             event.getItems().stream()
-                    .filter(item -> !item.getItemStack().getType().isBlock()||item.getItemStack().getType()==ANCIENT_DEBRIS)
+                    .filter(item -> !item.getItemStack().getType().isBlock()
+                            || item.getItemStack().getType() == ANCIENT_DEBRIS)
                     .forEach(item -> {
-                        if(item.getItemStack().getType()==ANCIENT_DEBRIS){
+                        if(item.getItemStack().getType() == ANCIENT_DEBRIS){
                             item.setItemStack(new ItemStack(NETHERITE_SCRAP, 2));
-                        }else {
+                        } else {
                             ItemStack stack = item.getItemStack();
                             stack.setAmount(stack.getAmount() + 2);
                             item.setItemStack(stack);
@@ -119,6 +116,7 @@ public class DwarfFaction extends AbstractFactionWithUniqueCraftingRecipes {
             minecart.setMaxSpeed(.8);
         }
     }
+
     private ShapedRecipe createWoodenPickaxeRecipe() {
         ItemStack item = new ItemStack(WOODEN_PICKAXE);
         ItemMeta itemMeta = item.getItemMeta();

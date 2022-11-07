@@ -7,7 +7,8 @@ Choose wisely, since you can't change it later on.
 ## The Factions
 ### Humans
 Humans gain the `Hero of the Village` and `Strength I` effect.
-Their main goal is it to trade with Villagers to get their items.
+For easier trading, they get way more resources from farming Crops.
+So their main goal is to trade with Villagers to get their items.
 They also can ride horses faster, which is their best option for travelling long distances.
 
 ### Dwarfs

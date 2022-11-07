@@ -37,11 +37,11 @@ public class OceanFaction extends AbstractFactionWithUniqueCraftingRecipes {
     @Override
     public void setEffectsFor(Player player) {
         player.addPotionEffect(
-                new PotionEffect(PotionEffectType.DOLPHINS_GRACE, 99999, 2, false, false));
+                new PotionEffect(PotionEffectType.DOLPHINS_GRACE, DURATION, 2, false, false));
         player.addPotionEffect(
-                new PotionEffect(PotionEffectType.CONDUIT_POWER, 99999, 1, false, false));
+                new PotionEffect(PotionEffectType.CONDUIT_POWER, DURATION, 1, false, false));
         player.addPotionEffect(
-                new PotionEffect(PotionEffectType.LUCK, 99999, 2, false, false));
+                new PotionEffect(PotionEffectType.LUCK, DURATION, 2, false, false));
     }
 
     @Override

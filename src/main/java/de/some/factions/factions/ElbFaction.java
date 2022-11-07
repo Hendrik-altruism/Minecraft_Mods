@@ -37,7 +37,7 @@ public class ElbFaction extends AbstractFactionWithUniqueCraftingRecipes {
     public void setEffectsFor(Player player) {
         player.setWalkSpeed(0.27f);
         player.addPotionEffect(
-                new PotionEffect(PotionEffectType.JUMP, 99999, 0, false, false));
+                new PotionEffect(PotionEffectType.JUMP, DURATION, 0, false, false));
     }
 
     @Override
@@ -48,7 +48,9 @@ public class ElbFaction extends AbstractFactionWithUniqueCraftingRecipes {
 
     @EventHandler (priority = EventPriority.HIGHEST)
     public void onPlayerExpChangeEvent(PlayerExpChangeEvent event) {
-        event.setAmount(event.getAmount()*2);
+        if (isEventForFaction(event.getPlayer())) {
+            event.setAmount(event.getAmount()*2);
+        }
     }
 
     @EventHandler (priority = EventPriority.HIGHEST)
@@ -64,7 +66,6 @@ public class ElbFaction extends AbstractFactionWithUniqueCraftingRecipes {
     public void onEntityMountEvent(EntityMountEvent event){
         if(event.getMount() instanceof AbstractHorse && isEventForFaction((Player) event.getEntity())){
             AbstractHorse horse = (AbstractHorse) event.getMount();
-            System.out.print("Horse Ride");
             horse.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 99999, 3, false, false));
             horse.addPotionEffect(new PotionEffect(PotionEffectType.JUMP, 99999, 1, false, false));
         }
@@ -74,7 +75,6 @@ public class ElbFaction extends AbstractFactionWithUniqueCraftingRecipes {
     public void onEntityDisMountEvent(EntityDismountEvent event){
         if(event.getDismounted() instanceof AbstractHorse && isEventForFaction((Player) event.getEntity())){
             AbstractHorse horse = (AbstractHorse) event.getDismounted();
-            System.out.print("Horse Ride");
             horse.removePotionEffect(PotionEffectType.SPEED);
             horse.removePotionEffect(PotionEffectType.JUMP);
         }
