@@ -4,18 +4,19 @@ import de.some.factions.Faction;
 import de.some.factions.FactionManager;
 import de.some.factions.SomeFactions;
 import de.some.factions.events.ChangeFactionEvent;
-import org.bukkit.Material;
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityPotionEffectEvent;
-import org.bukkit.event.player.PlayerItemConsumeEvent;
+import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
-import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
+
+import java.util.Objects;
 
 public abstract class AbstractFaction implements Listener {
 
@@ -32,7 +33,20 @@ public abstract class AbstractFaction implements Listener {
 
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent event) {
-        this.filterEvents(event.getPlayer());
+        Player player = event.getPlayer();
+        this.filterEvents(player);
+        if (this.isEventForFaction(player) &&
+                !Objects.requireNonNull(event.getJoinMessage()).contains(this.faction.toString())) {
+            event.setJoinMessage(this.faction.getColor() + this.faction.toString() + " | " + event.getJoinMessage());
+        }
+    }
+
+    @EventHandler
+    public void onAsyncPlayerChatEvent(AsyncPlayerChatEvent event) {
+        Player player = event.getPlayer();
+        if (this.isEventForFaction(player)) {
+            player.setDisplayName(this.faction.getColor() + player.getDisplayName() + ChatColor.WHITE);
+        }
     }
 
     @EventHandler (priority = EventPriority.HIGHEST)

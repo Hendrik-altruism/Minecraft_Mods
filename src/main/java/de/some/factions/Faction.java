@@ -2,8 +2,6 @@ package de.some.factions;
 
 import org.bukkit.ChatColor;
 
-import java.util.Arrays;
-
 public enum Faction {
     NO_FACTION ("No Faction", ChatColor.GRAY),
     DWARF ("Dwarf", ChatColor.DARK_GRAY),
@@ -15,7 +13,7 @@ public enum Faction {
     private final String name;
     private final ChatColor color;
 
-    private Faction(String name, ChatColor color) {
+    Faction(String name, ChatColor color) {
         this.name = name;
         this.color = color;
     }
